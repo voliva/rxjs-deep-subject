@@ -20,7 +20,7 @@ import {
   tap,
 } from 'rxjs/operators';
 
-interface DeepSubject<T> extends Observable<T>, Observer<T> {
+export interface DeepSubject<T> extends Observable<T>, Observer<T> {
   hasValue: () => boolean;
   getValue: () => T;
   getChild: <K extends keyof T>(key: K) => DeepSubject<T[K]>;

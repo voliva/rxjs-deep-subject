@@ -1,2 +1,2 @@
-export { deepSubject } from './deepSubject';
+export { deepSubject, DeepSubject } from './deepSubject';
 export { switchRepeat } from './switchRepeat';
