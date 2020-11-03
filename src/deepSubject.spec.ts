@@ -181,6 +181,15 @@ describe('deepSubject', () => {
     state$.getChild('b').complete();
     expect(bObs.values.length).toBe(1);
   });
+
+  test(`doesn't intercept class instances`, () => {
+    const state$ = deepSubject<any>();
+    state$.getChild('obs').next(new Observable());
+    expect(state$.getChild('obs').getValue() instanceof Observable).toBe(true);
+
+    const obs$ = deepSubject(new Observable());
+    expect(obs$.getValue() instanceof Observable).toBe(true);
+  });
 });
 
 function readObservable<T>(obs: Observable<T>) {

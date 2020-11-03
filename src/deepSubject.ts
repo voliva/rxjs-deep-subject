@@ -81,7 +81,7 @@ export function deepSubject<T>(initialValue: T = EMPTY as any): DeepSubject<T> {
 
   let isProcessing = false; // Disables emitting values
   const processValue = (value: T) => {
-    if (value === null || typeof value !== 'object') {
+    if (!isPlainObject(value)) {
       resetNested$.next();
       next$.next(value);
       return;
@@ -157,3 +157,8 @@ export function deepSubject<T>(initialValue: T = EMPTY as any): DeepSubject<T> {
     }
   );
 }
+
+const isPlainObject = (value: any) =>
+  value !== null &&
+  typeof value === 'object' &&
+  value.__proto__ === Object.prototype;
