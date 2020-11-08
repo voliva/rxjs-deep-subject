@@ -24,6 +24,7 @@ export interface DeepSubject<T> extends Observable<T>, Observer<T> {
   hasValue: () => boolean;
   getValue: () => T;
   getChild: <K extends keyof T>(key: K) => DeepSubject<T[K]>;
+  getKeys: () => (keyof T)[];
 }
 
 const EMPTY = {};
@@ -154,6 +155,7 @@ export function deepSubject<T>(initialValue: T = EMPTY as any): DeepSubject<T> {
         }
         return childSubjects.get(key)!;
       },
+      getKeys: () => Array.from(childSubjects.keys()),
     }
   );
 }
