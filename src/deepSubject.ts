@@ -14,7 +14,6 @@ import {
   multicast,
   refCount,
   scan,
-  startWith,
   switchMap,
   takeUntil,
   tap,
@@ -62,10 +61,8 @@ export function deepSubject<T>(initialValue: T = EMPTY as any): DeepSubject<T> {
   const resetNested$ = new Subject();
   const value$ = merge(
     next$,
-    resetNested$.pipe(
-      startWith(null),
-      switchMap(() => nestedValue$({} as T))
-    )
+    nestedValue$(initialValue).pipe(takeUntil(resetNested$)),
+    resetNested$.pipe(switchMap(() => nestedValue$({} as any)))
   ).pipe(
     multicast(new BehaviorSubject(initialValue)),
     refCount(),

@@ -190,6 +190,20 @@ describe('deepSubject', () => {
     const obs$ = deepSubject(new Observable());
     expect(obs$.getValue() instanceof Observable).toBe(true);
   });
+
+  test('it keeps undefined values on inner keys', () => {
+    const state$ = deepSubject({
+      foo: undefined,
+      bar: 1,
+    });
+    expect(state$.getValue()).toHaveProperty('foo');
+    const observed = readObservable(state$);
+    expect(observed.values[observed.values.length - 1]).toHaveProperty('foo');
+
+    state$.getChild('bar').next(2);
+    expect(state$.getValue()).toHaveProperty('foo');
+    expect(observed.values[observed.values.length - 1]).toHaveProperty('foo');
+  });
 });
 
 function readObservable<T>(obs: Observable<T>) {
